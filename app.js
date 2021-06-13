@@ -77,20 +77,23 @@ const item = ({ preview, original, description }) => {
 const itemEL = galleryItems.map(item).join('');
 galleryEl.insertAdjacentHTML('beforeend', itemEL);
 
+function modalImage(src, alt) {
+  lightboxImg.src = `${src}`;
+  lightboxImg.alt = `${alt}`;
+}
+
 function onModalOpenClick(event) {
   event.preventDefault();
   if (event.target.nodeName === 'IMG') {
     lightboxEl.classList.add('is-open');
-    lightboxImg.src = event.target.dataset.source;
-    lightboxImg.alt = event.target.alt;
+    modalImage(event.target.dataset.source, event.target.alt);    
   }
 }
 
 function onModalCloseClick(event) {
-  if (event.target.nodeName !== 'IMG' || event.target.nodeName === 'BUTTON') {    
-    lightboxImg.src = '';
-    lightboxImg.alt = '';
+  if (event.target.nodeName !== 'IMG' || event.target.nodeName === 'BUTTON') {
     lightboxEl.classList.remove('is-open');
+    modalImage('', '');
   }
 }
 
