@@ -63,3 +63,37 @@ const galleryItems = [
     description: 'Lighthouse Coast Sea',
   },
 ];
+const galleryEl = document.querySelector('.js-gallery');
+const lightboxEl = document.querySelector('.js-lightbox');
+const lightboxImg = document.querySelector('.lightbox__image');
+const overlay = document.querySelector('.lightbox__overlay');
+const buttonClose = document.querySelector('.lightbox__button');
+
+const item = ({ preview, original, description }) => {
+  return `<li class="gallery__item"><a class="gallery__link" href="${original}">
+  <img class="gallery__image" src="${preview}" data-source="${original}" alt="${description}"></img></a></li>`;  
+}
+
+const itemEL = galleryItems.map(item).join('');
+galleryEl.insertAdjacentHTML('beforeend', itemEL);
+
+function onModalOpenClick(event) {
+  event.preventDefault();
+  if (event.target.nodeName === 'IMG') {
+    lightboxEl.classList.add('is-open');
+    lightboxImg.src = event.target.dataset.source;
+    lightboxImg.alt = event.target.alt;
+  }
+}
+
+function onModalCloseClick(event) {
+  if (event.target.nodeName !== 'IMG' || event.target.nodeName === 'BUTTON') {    
+    lightboxImg.src = '';
+    lightboxImg.alt = '';
+    lightboxEl.classList.remove('is-open');
+  }
+}
+
+galleryEl.addEventListener('click', onModalOpenClick);
+buttonClose.addEventListener('click', onModalCloseClick);
+overlay.addEventListener('click', onModalCloseClick);
